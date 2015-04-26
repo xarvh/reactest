@@ -1,3 +1,6 @@
+# Write everything in coffeescript
+*.js
+
 # Logs
 logs
 *.log
