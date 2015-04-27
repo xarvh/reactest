@@ -14,14 +14,14 @@ o = Object.seal {}
 CommentBox = React.createClass render: ->
   {table, tr, td} = htmlTags
 
-  table {},
+  table o,
 
     # Pools 1 to 30
-    tr o,
-      td {colSpan: 3},
-        table o,
-          tr o,
-            [1..30].map (n) -> td o, "#{n}"
+    tr '.outer-row',
+      td '', colSpan: 3,
+        table '',
+          tr '',
+            [1..30].map (n) -> td '', "#{n}"
 
     # Name, descriptor, type, focus
     tr o,
