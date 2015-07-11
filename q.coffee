@@ -1,26 +1,39 @@
 
-initialState = ->
-  poolRulerSize: 35
-
-
-
-
 NumeneraCharacterSheet = React.createClass
-  getInitialState: -> initialState()
-  componentDidMount: -> console.log 'ready'
+  getInitialState: ->
+    poolRulerMax: 30
+
   render: ->
-    window.sheet = this
+
+    poolRulerCount = 1 + @state.poolRulerMax
+    poolRulerClipWidthPercentage = 100 / poolRulerCount
+
+    fullWidth = style: width: '100%'
+
     o 'table',
-      o 'tr.outer-row',
+
+      o 'tr.OUTER-ROW',
         o 'td', colSpan: 3,
-          o 'table',
+          o 'table', fullWidth,
             o 'tr',
-              for n in [0..@state.poolRulerSize]
-                o 'td', key: n, "#{n}"
-          o 'table',
+              for n in [0..@state.poolRulerMax]
+                o 'td', width: "#{poolRulerClipWidthPercentage}%", "#{n}"
+          o 'table', fullWidth,
             o 'tr',
               o 'td', '_______________________ is a ________________ ____________ who __________________________________________'
 
+
+#      o 'tr.MAIN-ROW',
+#        o 'td',
+#
+#          o 'table'
+
+
+
+
+
+  componentDidMount: ->
+    window.sheet = this
 
 
 
