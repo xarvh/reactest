@@ -1,17 +1,25 @@
 
-NumeneraCharacterSheet = React.createClass render: ->
+initialState = ->
+  poolRulerSize: 35
 
-  o 'table',
 
-    o 'tr.outer-row',
-      o 'td', colSpan: 3,
-        o 'table',
-          o 'tr',
-            for n in [0...30]
-              o 'td', key: n, "#{n}"
-        o 'table',
-          o 'tr',
-            o 'td', '_______________________ is a ________________ ____________ who __________________________________________'
+
+
+NumeneraCharacterSheet = React.createClass
+  getInitialState: -> initialState()
+  componentDidMount: -> console.log 'ready'
+  render: ->
+    window.sheet = this
+    o 'table',
+      o 'tr.outer-row',
+        o 'td', colSpan: 3,
+          o 'table',
+            o 'tr',
+              for n in [0..@state.poolRulerSize]
+                o 'td', key: n, "#{n}"
+          o 'table',
+            o 'tr',
+              o 'td', '_______________________ is a ________________ ____________ who __________________________________________'
 
 
 
@@ -36,9 +44,9 @@ o = (def, children...) ->
   for c, index in children when !isContent(c) then throw new Error "#{def}, #{properties.key}, #{index}"
 
 #  console.log 'o', {tagName, properties, len: children.length}
-  React.createElement tagName, properties, children
+  return React.createElement tagName, properties, children
 
 
 
-React.render React.createElement(NumeneraCharacterSheet, null), document.getElementById('content')
-
+sheet = React.createElement NumeneraCharacterSheet, {}
+React.render sheet, document.getElementById('content')
