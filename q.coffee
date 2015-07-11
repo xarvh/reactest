@@ -1,86 +1,44 @@
 
-reactTagFactory = (tagName) ->
-  (properties, children...) ->
-    React.createElement tagName, properties, children
+NumeneraCharacterSheet = React.createClass render: ->
 
-htmlTags = {}
-for tagName in 'div table tr td'.split(' ') then htmlTags[tagName] = htmlTags[tagName.toUpperCase()] = reactTagFactory tagName
+  o 'table',
 
-o = Object.seal {}
-
-
-
-
-CommentBox = React.createClass render: ->
-  {table, tr, td} = htmlTags
-
-  table o,
-
-    # Pools 1 to 30
-    tr '.outer-row',
-      td '', colSpan: 3,
-        table '',
-          tr '',
-            [1..30].map (n) -> td '', "#{n}"
-
-    # Name, descriptor, type, focus
-    tr o,
-      td colSpan: 3,
-        '_______________________ is a ________________ ____________ who __________________________________________'
-
-    tr o,
-      # LEFT COLUMN
-      td o, table o,
-        tr o, td o, 'SKILLS'
-
-        [1..15].map(-> tr o, td o, 'T S _________________________________')
-
-        tr o, td o, 'Inability __________________________'
-        tr o, td o, ''
-        tr o, td o, 'SPECIAL ABILITIES'
-
-        [1..10].map(-> tr o, td o, '____________________________')
-
-      # CENTRE COLUMN
-      td o, table,
-        tr o, td o, 'SQUAAAAAAAAAAACK!'
-
-
-      # RIGHT COLUMN
-
-
-
-#  div className: 'commentBox', [
-#    h1 key: 'meh', 'HELLO WORLD'
-#  ]
+    o 'tr.outer-row',
+      o 'td', colSpan: 3,
+        o 'table',
+          o 'tr',
+            for n in [0...30]
+              o 'td', key: n, "#{n}"
+        o 'table',
+          o 'tr',
+            o 'td', '_______________________ is a ________________ ____________ who __________________________________________'
 
 
 
 
-React.render React.createElement(CommentBox, null), document.getElementById('content')
+o = (def, children...) ->
 
+  isContent = (thing) -> thing?._isReactElement or typeof thing is 'string'
 
-#expose = -> for tagName in arguments then window[tagName] = reactTagFactory tagName
-#expose 'table', 'tr', 'td', 'div', 'h1', 'h3'
+  # Tag and classes
+  [tagName, classes...] = def.split '.'
+  tagName or= 'div'
 
+  # Properties and children
+  children = _.flatten children
+  properties = if isContent children[0] then {} else children.shift()
 
-#    [a0] = arguments
-#    [properties, children] = if a0?.constructor.name is 'Object' then arguments else [{}, a0]
-#    if typeof children is 'function' then children = [children]
-#    React.createElement tagName, properties, children
+  # Set className
+  if classes.length
+    properties.className = classes.join ' '
 
-#    switch
-#    when typeof a1 is 'string', Array.isArray(a1) then [{}, a1]
-#    when typeof a1 is 'function' then [{}, [a1]]
-#    else arguments
-#  React.createElement tagName, properties, _.flatten children
+  # Assert
+  for c, index in children when !isContent(c) then throw new Error "#{def}, #{properties.key}, #{index}"
 
-
-
-
-
-
+#  console.log 'o', {tagName, properties, len: children.length}
+  React.createElement tagName, properties, children
 
 
 
+React.render React.createElement(NumeneraCharacterSheet, null), document.getElementById('content')
 
