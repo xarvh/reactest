@@ -1,57 +1,65 @@
 
+
+poolRuler = (list, strokeWidth, totalWidth, totalHeight) ->
+  marginToWidthRatio = 0.1
+
+  N = list.length
+  cellWidth = totalWidth / (N + N*marginToWidthRatio + marginToWidthRatio)
+  cellMargin = cellWidth * marginToWidthRatio
+  cellSpacing = cellWidth * (1 + marginToWidthRatio)
+
+  rounding = strokeWidth * 1.5
+
+  padding = strokeWidth
+  cellHeight = totalHeight - 2 * cellMargin
+  fontSize = cellHeight - padding
+
+  return list.map (entry, index) ->
+    x = cellMargin + index * cellSpacing
+    y = cellMargin
+
+    return [
+      o 'rect',
+        x: x
+        y: y
+        width: cellWidth
+        height: cellHeight
+        fill: 'white'
+        stroke: 'black'
+        strokeWidth: strokeWidth
+        rx: rounding
+        ry: rounding
+
+      o 'text',
+        x: x + cellWidth / 2
+        y: y + cellHeight - padding * 1.5
+        fontFamily: 'impact'
+        fontSize: fontSize
+        textAnchor: 'middle'
+      , "#{entry}"
+    ]
+
+
+
+
 NumeneraCharacterSheet = React.createClass
   getInitialState: ->
     poolRulerMax: 30
 
   render: ->
 
-    width = 297
-    height = 210
+#    width = 297
+#    height = 210
+    width = 594
+    height = width * 210 / 297
     a4 =
       width: width + 'mm'
       height: height + 'mm'
       viewBox: "0 0 #{width} #{height}"
 
-
-    poolRulerCell = (n) =>
-      border = 2
-      N = 1 + @state.poolRulerMax
-      w = (width - (N-1)*border) / N
-      h = 20
-      x = n * (w + border)
-      y = 0
-
-      console.log {N, n, w, h, x, y}
-
-      return [
-        o 'rect',
-          x: x
-          y: y
-          width: w + 'mm'
-          height: h
-          fill: 'white'
-          stroke: 'black'
-          strokeWidth: 1
-          rx: '2'
-          ry: '2'
-      ,
-        o 'text',
-          x: (x + w / 2) + 'mm'
-          y: y + h - border * 2
-          fontFamily: 'impact'
-          fontSize: h - border * 2
-          textAnchor: 'middle'
-        , "#{n}"
-      ]
-
-
-    poolRuler = []
-    for n in [0..@state.poolRulerMax] then poolRuler.push poolRulerCell(n)...
-
-
-
     return o 'svg', a4,
-      o 'g', poolRuler...
+
+      o 'g', poolRuler [0..30], 1, width, height / 30
 
 
 
