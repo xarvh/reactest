@@ -40,6 +40,8 @@ poolRuler = (list, strokeWidth, totalWidth, totalHeight) ->
     ]
 
 
+title = (totalWidth) ->
+
 
 
 NumeneraCharacterSheet = React.createClass
